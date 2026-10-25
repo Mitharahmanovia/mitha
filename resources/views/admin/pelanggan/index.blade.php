@@ -287,8 +287,7 @@
                     <p class="mb-0">List data seluruh pelanggan</p>
                 </div>
                 <div>
-                    <a href="" class="btn btn-success text-white"><i class="far fa-question-circle me-1"></i> Tambah Pelanggan</a>
-                </div>
+                 <a href="{{ route('pelanggan.create') }}" class="btn btn-success text-white"><i class="far fa-question-circle me-1"></i> Tambah Pelanggan</a>
             </div>
         </div>
 
@@ -310,7 +309,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($dataPelanggan as $item)
+                                    @forelse($dataPelanggan as $item)
                                         <tr>
                                             <td>{{ $item->firstname }}</td>
                                             <td>{{ $item->last_name }}</td>
@@ -318,9 +317,26 @@
                                             <td>{{ $item->gender }}</td>
                                             <td>{{ $item->email }}</td>
                                             <td>{{ $item->phone }}</td>
-                                            <td>Tombol Edit & Tombol Hapus</td>
+                                           <td>
+                                            <a href="{{ route('pelanggan.edit', $item->id) }}" class="btn btn-info btn-sm">Edit</a>
+                                            
+                                            <form action="{{ route('pelanggan.destroy', $item->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm text-white">
+                                                    <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                    </svg>
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center py-3">Belum ada data pelanggan. Silakan klik Tambah Pelanggan.</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
