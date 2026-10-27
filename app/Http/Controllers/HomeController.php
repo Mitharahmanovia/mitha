@@ -9,13 +9,17 @@ class HomeController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
-    $data ['username']        = 'Laravel 2TIB';
-    $data ['last_login']      = date('Y-m-d H:i:s');
-    $data ['list_pendidikan'] = ['SD','SMP','SMA','S1','S2','S3'];
-    return view('home', $data );
+        $portofolios = \App\Models\Portofolio::where('is_active', true)
+            ->latest()
+            ->get();
+
+    return view('portfolio.public', compact('portofolios'));
+
     }
+
 
     /**
      * Show the form for creating a new resource.
