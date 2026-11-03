@@ -7,6 +7,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\BiodataController;
 use App\Http\Controllers\PortofolioController;
+use App\Http\Controllers\UserController;
+
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -32,3 +34,5 @@ Route::patch('portofolio/{portofolio}/toggle', [PortofolioController::class, 'to
 
 Route::get('/karya', [PortofolioController::class, 'publicPage'])
     ->name('portofolio.public');
+
+Route::resource('user', UserController::class);
