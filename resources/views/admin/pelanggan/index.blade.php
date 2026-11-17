@@ -34,6 +34,31 @@
                 <div class="card border-0 shadow mb-4">
                     <div class="card-body">
                         <div class="table-responsive">
+                            <form method="GET" action="{{ route('pelanggan.index') }}" class="mb-3">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <select name="gender" onchange="this.form.submit()" class="form-select">
+                                            <option value="">All</option>
+                                            <option value="Male" {{ request('gender')=='Male' ? 'selected' : '' }}>Male</option>
+                                            <option value="Female" {{ request('gender')=='Female' ? 'selected' : '' }}>Female</option>
+                                            <option value="Other" {{ request('gender')=='Other' ? 'selected' : '' }}>Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <input type="text" name="search" class="form-control" id="exampleInputIconRight" value="{{ request('search') }}" placeholder="Search" aria-label="Search">
+                                            <button type="submit" class="input-group-text" id="basic-addon2">
+                                                <svg class="icon icon-xxs" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                                                </svg>
+                                            </button>
+                                            @if(request('search'))
+                                                <a href="{{ request()->fullUrlWithQuery(['search' => null]) }}" class="btn btn-outline-secondary ml-3" id="clear-search">Clear</a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                             <table id="table-pelanggan" class="table table-centered table-nowrap mb-0 rounded">
                                 <thead class="thead-light">
                                     <tr>
@@ -47,7 +72,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($dataPelanggan as $item)
+                                    @forelse ($dataPelanggan as $item)
                                         <tr>
                                             <td>{{ $item->first_name }}</td>
                                             <td>{{ $item->last_name }}</td>
@@ -55,28 +80,32 @@
                                             <td>{{ $item->gender }}</td>
                                             <td>{{ $item->email }}</td>
                                             <td>{{ $item->phone }}</td>
-                                           <td>
-                                            <a href="{{ route('pelanggan.edit', $item->id) }}" class="btn btn-info btn-sm">Edit</a>
+                                            <td>
+                                                <a href="{{ route('pelanggan.edit', $item->pelanggan_id) }}" class="btn btn-info btn-sm">Edit</a>
 
-                                            <form action="{{ route('pelanggan.destroy', $item->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm text-white">
-                                                    <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                    </svg>
-                                                    Hapus
-                                                </button>
-                                            </form>
-                                        </td>
+                                                <form action="{{ route('pelanggan.destroy', $item->pelanggan_id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm text-white">
+                                                        <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                        </svg>
+                                                        Hapus
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
                                             <td colspan="7" class="text-center py-3">Belum ada data pelanggan. Silakan klik Tambah Pelanggan.</td>
                                         </tr>
-                                    @endforeach
+                                    @endforelse
                                 </tbody>
                             </table>
+
+                            <div class="mt-3">
+                                {{ $dataPelanggan->links('pagination::bootstrap-5') }}
+                            </div>
                         </div>
                     </div>
                 </div>
